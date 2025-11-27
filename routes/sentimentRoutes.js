@@ -1,13 +1,14 @@
 import express from "express";
 import multer from "multer";
 import fetch from "node-fetch";
+import fs from "fs";
+import FormData from "form-data";
 
 const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
-// URL API Python kamu di Railway (GANTI sesuai domain yang Python)
+
 const PYTHON_API = "https://pyhton-ml-api-production.up.railway.app";
-// contoh: https://sentimen-ai-production.up.railway.app
 
 router.post("/predict", async (req, res) => {
   try {
@@ -27,8 +28,8 @@ router.post("/predict", async (req, res) => {
   }
 });
 
-
 // ============ 🔥 CSV PREDICT ============
+
 router.post("/predict-csv", upload.single("file"), async (req, res) => {
   if (!req.file) return res.status(400).json({ error: "No CSV uploaded" });
 
@@ -41,6 +42,7 @@ router.post("/predict-csv", upload.single("file"), async (req, res) => {
     const response = await fetch(`${PYTHON_API}/predict-csv`, {
       method: "POST",
       body: formData,
+      headers: formData.getHeaders(), // ✅ harus ada supaya multipart/form-data benar
     });
 
     const data = await response.json();
@@ -50,5 +52,6 @@ router.post("/predict-csv", upload.single("file"), async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 export default router;
