@@ -6,7 +6,7 @@ const router = express.Router();
 const upload = multer({ dest: "uploads/" });
 
 // URL API Python kamu di Railway (GANTI sesuai domain yang Python)
-const PYTHON_API = "https://pyhton-ml-api-production.up.railway.app/";
+const PYTHON_API = "https://pyhton-ml-api-production.up.railway.app";
 // contoh: https://sentimen-ai-production.up.railway.app
 
 // ============ 🔥 MULTI-TEXT PREDICT ============
