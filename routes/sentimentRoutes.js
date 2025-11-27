@@ -37,12 +37,15 @@ router.post("/predict-csv", upload.single("file"), async (req, res) => {
     const fileStream = req.file;
 
     const formData = new FormData();
-    formData.append("file", fs.createReadStream(fileStream.path));
+    formData.append("file", fs.createReadStream(fileStream.path), {
+      filename: fileStream.originalname,
+      contentType: "text/csv",
+    });
 
     const response = await fetch(`${PYTHON_API}/predict-csv`, {
       method: "POST",
       body: formData,
-      headers: formData.getHeaders(), // ✅ harus ada supaya multipart/form-data benar
+      headers: formData.getHeaders(),
     });
 
     const data = await response.json();
