@@ -9,15 +9,14 @@ const upload = multer({ dest: "uploads/" });
 const PYTHON_API = "https://pyhton-ml-api-production.up.railway.app";
 // contoh: https://sentimen-ai-production.up.railway.app
 
-// ============ 🔥 MULTI-TEXT PREDICT ============
 router.post("/predict", async (req, res) => {
   try {
-    const { texts } = req.body; // array of text
+    const { text } = req.body;
 
     const response = await fetch(`${PYTHON_API}/predict`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ texts }),
+      body: JSON.stringify({ text }),
     });
 
     const data = await response.json();
@@ -27,6 +26,7 @@ router.post("/predict", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // ============ 🔥 CSV PREDICT ============
 router.post("/predict-csv", upload.single("file"), async (req, res) => {
